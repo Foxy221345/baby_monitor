@@ -26,7 +26,7 @@ function start()
 function draw()
 {
     image(video,0,0, 380, 380);
-    if(object[i].label=="person")
+    if(object[0].label=="person")
    {
     document.getElementById("status").innerHTML="baby is detected";
     audio.stop();
@@ -36,8 +36,6 @@ function draw()
     document.getElementById("status").innerHTML="baby not detected";
     audio.play();
    }
-   
-    image(video,0,0, 380, 380);
 
  if(objects[i].length<0)
  {
