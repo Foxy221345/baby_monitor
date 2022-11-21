@@ -2,6 +2,7 @@ load_status="";
 
 object=[];
 audio="";
+audio_status=false;
 function preload()
 {
  audio=loadImage("one_call_away.mp3");
@@ -25,23 +26,40 @@ function start()
 
 function draw()
 {
-    image(video,0,0, 380, 380);
-    if(object[0].label=="person")
+   image(video,0,0, 380, 380);
+   object_detector.detect(video,gotResult);
+   for(i=0; i<object.length;i++)
+   {
+
+    if(load_status !="")
+    {
+      if(object.length<0)
+ {
+    document.getElementById("status").innerHTML="baby not detected";
+    audio.play();
+    audio_status=true;
+ }
+ else
+ {
+
+    if(object[i].label=="person")
    {
     document.getElementById("status").innerHTML="baby is detected";
+    if(audio_status==true)
+    {
     audio.stop();
+    audio_status=false;
+    }
    }
    else
    {
     document.getElementById("status").innerHTML="baby not detected";
     audio.play();
+    audio_status=true;
    }
-
- if(objects[i].length<0)
- {
-    document.getElementById("status").innerHTML="baby not detected";
-    audio.play();
  }
+   }
+}
 
 
 }
@@ -50,7 +68,6 @@ function draw()
 function modelLoaded()
 { 
     console.log("model is loaded");
-    load_status="true";
 }
 
 function gotResult(error, results)
@@ -63,6 +80,7 @@ function gotResult(error, results)
  {
     console.log(results);
     object=results;
+    load_status="true";
  }
 
  
